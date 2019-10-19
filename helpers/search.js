@@ -47,26 +47,32 @@ async function askKnowledgeBase(kbId, query) {
 
   try {
     const result = await request(options);
-    if (result.body && !result.body.error) {
+    console.log(result);
+    if (result.body && !result.body.errorMessage) {
       return {
         query: result.body.query,
         result: _filterByConfidence(result.body.results[0])
       };
+    }
+
+    if (result.body && result.body.errorMessage) {
+      throw new Error(result.body.errorMessage);
     }
   } catch (e) {
     return { status: "error", message: e };
   }
 }
 
-const ask = async () => {
-  const faq = await askKnowledgeBase(
-    "1995df85-0984-4683-baa5-dc87a94b183d",
-    "How do I go on vacation?"
-  );
+// FOR TESTING
+// const ask = async () => {
+//   const faq = await askKnowledgeBase(
+//     "1995df85-0984-4683-baa5-dc87a94b183d",
+//     "How do I go on vacation?"
+//   );
 
-  console.log(faq);
-};
+//   console.log(faq);
+// };
 
-ask();
+// ask();
 
 module.exports = { askKnowledgeBase };
