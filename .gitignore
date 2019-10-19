@@ -1,5 +1,7 @@
 google_creds.json
 .DS_Store
+venv
+
 # Logs
 logs
 *.log
