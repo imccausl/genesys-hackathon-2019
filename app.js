@@ -23,9 +23,8 @@ app.use("/", indexRouter);
 app.use("/sentiment", sentimentRouter);
 app.use("/users", usersRouter);
 app.use("/actions", actionsRouter);
-app.use("/search", searchRouter);
+app.use("/ask", searchRouter);
 
 global.token =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6ImEyZmE3NDg1LTViMWUtNDBiNC1iZTVhLWM0ZmY2NGE2ODY3NSIsImV4cCI6MTU3MTUyMTgzNCwiaWF0IjoxNTcxNTE4MjM0fQ.OGrzUgUgulu-rZj0zOMnQSw4JwVngulcG_FgU-xyOpE";
-
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6ImEyZmE3NDg1LTViMWUtNDBiNC1iZTVhLWM0ZmY2NGE2ODY3NSIsImV4cCI6MTU3MTUyNzg3OCwiaWF0IjoxNTcxNTI0Mjc4fQ._hfWL131dU2wBYT8Y4C3aSQwEwDsIB9yjlNFfJfk2Ck";
 module.exports = app;
