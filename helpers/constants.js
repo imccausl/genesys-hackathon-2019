@@ -6,4 +6,6 @@ const API = {
   knowledgeBases: "knowledgebases"
 };
 
-module.exports = { API };
+const CONFIDENCE_THRESHOLD = 0.6;
+
+module.exports = { API, CONFIDENCE_THRESHOLD };
