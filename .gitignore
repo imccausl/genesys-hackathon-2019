@@ -1,5 +1,5 @@
 google_creds.json
-
+.DS_Store
 # Logs
 logs
 *.log
