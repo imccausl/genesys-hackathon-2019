@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=genesys-hackathon-2019:* nodemon ./bin/www"
+    "start": "export GOOGLE_APPLICATION_CREDENTIALS=./google_creds.json && DEBUG=genesys-hackathon-2019:* nodemon ./bin/www"
   },
   "dependencies": {
     "@google-cloud/language": "^3.5.0",

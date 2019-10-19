@@ -21,5 +21,4 @@ async function analyze(text) {
   return { text, sentiment };
 }
 
-analyze("fuck you");
 module.exports = analyze;
