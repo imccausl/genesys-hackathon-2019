@@ -7,7 +7,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var actionsRouter = require("./routes/actions");
 var sentimentRouter = require("./routes/sentiment");
-
+var searchRouter = require("./routes/search");
 var app = express();
 
 app.use(logger("dev"));
@@ -20,6 +20,7 @@ app.use("/", indexRouter);
 app.use("/sentiment", sentimentRouter);
 app.use("/users", usersRouter);
 app.use("/actions", actionsRouter);
+app.use("/search", searchRouter);
 
 global.token =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6ImEyZmE3NDg1LTViMWUtNDBiNC1iZTVhLWM0ZmY2NGE2ODY3NSIsImV4cCI6MTU3MTUxNzIxNCwiaWF0IjoxNTcxNTEzNjE0fQ.JdTjgptvJbxiTHBDITylaxEfuGSMdOUL2pkPfxI8dRU";
