@@ -6,6 +6,7 @@
     "start": "DEBUG=genesys-hackathon-2019:* nodemon ./bin/www"
   },
   "dependencies": {
+    "@google-cloud/language": "^3.5.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
