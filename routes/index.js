@@ -6,7 +6,7 @@ var router = express.Router();
 //   res.render("index", { title: "Hackathon App" });
 // });
 router.get("/", function(req, res, next) {
-  res.json({ title: "Hackathon App" });
+  res.json({ status: "connected" });
 });
 
 module.exports = router;
