@@ -10,8 +10,10 @@ router.post("/", async function(req, res, next) {
   const result = await askKnowledgeBase(
     KNOWLEDGE_BASES.slack,
     req.body.queryResult.queryText,
-    req.body.originalDetectIntentRequest.payload.data.event.channel_type ===
-      "channel"
+    req.body.originalDetectIntentRequest.payload.data
+      ? req.body.originalDetectIntentRequest.payload.data.event.channel_type ===
+          "channel"
+      : false
   );
   res.json(result);
 });
