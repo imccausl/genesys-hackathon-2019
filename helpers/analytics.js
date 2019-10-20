@@ -1,0 +1,222 @@
+var request = require("request");
+var analyze = require("./analyze");
+
+data = [
+  "So there is no way for me to plug it in here in the US unless I go by a converter.",
+  "Good case, Excellent value.",
+  "Great for the jawbone.",
+  "Tied to charger for conversations lasting more than 45 minutes.MAJOR PROBLEMS!!",
+  "The mic is great.",
+  "I have to jiggle the plug to get it to line up right to get decent volume.",
+  "If you have several dozen or several hundred contacts, then imagine the fun of sending each of them one by one.",
+  "If you are Razr owner...you must have this!",
+  "Needless to say, I wasted my money.",
+  "What a waste of money and time!.",
+  "And the sound quality is great.",
+  "He was very impressed when going from the original battery to the extended battery.",
+  "If the two were seperated by a mere 5+ ft I started to notice excessive static and garbled sound from the headset.",
+  "Very good quality though",
+  "The design is very odd, as the ear clip is not very comfortable at all.",
+  "Highly recommend for any one who has a blue tooth phone.",
+  "I advise EVERYONE DO NOT BE FOOLED!",
+  "So Far So Good!.",
+  "Works great!.",
+  "It clicks into place in a way that makes you wonder how long that mechanism would last.",
+  "I went on Motorolas website and followed all directions, but could not get it to pair again.",
+  "I bought this to use with my Kindle Fire and absolutely loved it!",
+  "The commercials are the most misleading.",
+  "I have yet to run this new battery below two bars and thats three days without charging.",
+  "I bought it for my mother and she had a problem with the battery.",
+  "Great Pocket PC / phone combination.",
+  "Ive owned this phone for 7 months now and can say that its the best mobile phone Ive had.",
+  "I didnt think that the instructions provided were helpful to me.",
+  "People couldnt hear me talk and I had to pull out the earphone and talk on the phone.",
+  "Doesnt hold charge.",
+  "This is a simple little phone to use, but the breakage is unacceptible.",
+  "This product is ideal for people like me whose ears are very sensitive.",
+  "It is unusable in a moving car at freeway speed.",
+  "I have two more years left in this contract and I hate this phone.",
+  "Car charger as well as AC charger are included to make sure you never run out of juice.Highy recommended",
+  "You need at least 3 mins to get to your phone book from the time you first turn on the phone.Battery life is short.",
+  "It has kept up very well.",
+  "Poor Talk Time Performance.",
+  "The case is great and works fine with the 680.",
+  "worthless product.",
+  "It has a great camera thats 2MP, and the pics are nice and clear with great picture quality.",
+  "I was not impressed by this product.",
+  "Nice headset priced right.",
+  "I only hear garbage for audio.",
+  "Excellent bluetooth headset.",
+  "It has all the features I want",
+  "Who in their right mind is gonna buy this battery?.",
+  "AFTER ARGUING WITH VERIZON REGARDING THE DROPPED CALLS WE RETURNED THE PHONES AFTER TWO DAYS.",
+  "This case seems well made.",
+  "Disappointed with battery.",
+  "Not loud enough and doesnt turn on like it should.",
+  "good protection and does not make phone too bulky.",
+  "A usable keyboard actually turns a PDA into a real-world useful machine instead of just a neat gadget.",
+  "This phone is pretty sturdy and Ive never had any large problems with it.",
+  "I love this thing!",
+  "Everything about it is fine and reasonable for the price i.e.",
+  "VERY DISAPPOINTED.",
+  "I even dropped this phone into a stream and it was submerged for 15 seconds and it still works great!",
+  "I have been very happy with the 510 and have had NO complaints from any one regarding my sound quality on their end.",
+  "The buttons for on and off are bad.",
+  "Essentially you can forget Microsofts tech support.",
+  "I really recommend this faceplates since it looks very nice, elegant and cool.",
+  "These headphones were a great find - and I think they are perhaps the best purchase Ive made in the last several years - seriously.",
+  "Buy a different phone - but not this.",
+  "You have to hold the phone at a particular angle for the other party to hear you clearly.",
+  "The one big drawback of the MP3 player is that the buttons on the phones front cover that let you pause and skip songs lock out after a few seconds.",
+  "A week later after I activated it, it suddenly died.",
+  "It feels more comfortable than most headsets because I wear glasses and that gets in the way sometimes.",
+  "Great for iPODs too.",
+  "This device is great in several situations:1.)",
+  "Mic Doesnt work.",
+  "Even in my BMW 3 series which is fairly quiet, I have trouble hearing what the other person is saying.",
+  "Great choice!",
+  "Nice docking station for home or work.",
+  "This is a beautiful phone.",
+  "Love this product.",
+  "Do Not Buy for D807...wrongly advertised for D807.",
+  "This is a great little item.",
+  "I love this phone , It is very handy and has a lot of features .",
+  "I purchased this and within 2 days it was no longer working!!!!!!!!!",
+  "I wear it everyday and it holds up very well.",
+  "Not a good bargain.",
+  "Well packaged, arrived on time, and works as intended.",
+  "The battery runs down quickly.",
+  "This item worked great, but it broke after 6 months of use.",
+  "The headsets are easy to use and everyone loves them.",
+  "This phone works great.",
+  "The construction of the headsets is poor.",
+  "Product was excellent and works better than the verizon one and Boy was it cheaper!",
+  "The phone loads super!",
+  "For a product that costs as much as this one does, I expect it to work far better and with greater ease than this thing does.",
+  "Made very sturdy.",
+  "Worked great!.",
+  "The ear buds only play music in one ear.",
+  "Dont waste your money...",
+  "Will order from them again!",
+  "If you plan to use this in a car forget about it.",
+  "I found this product to be waaay too big.",
+  "Best Ive found so far .... Ive tried 2 other bluetooths and this one has the best quality (for both me and the listener) as well as ease of using.",
+  "Im very disappointed with my decision.",
+  "Integrated seamlessly with the Motorola RAZR phone.",
+  "Buyer Beware, you could flush money right down the toilet.",
+  "Definitely a bargain.",
+  "The price was very good and with the free shipping and all it was a good purchase.",
+  "I received my supposedly new motorola 375 and apparently there was not a match between the phone and the charger.",
+  "Pros:-Good camera - very nice pictures , also has cool styles like black and white, and more.",
+  "Thats a huge design flaw (unless Im not using it correctly, which I dont think is the case).",
+  "I love my 350 headset.. My Jabra350 bluetooth headset is great, the reception is very good and the ear piece is a comfortable fit.",
+  "The camera, although rated at an impressive 1.3 megapixels, renders images that fall well below expectations of such a relatively high resolution.",
+  "I purcashed this for the car charger and it does not work.",
+  "Sound quality on both end is excellent, I use headset to call my wife and ask my wife to use headset to call me !2.",
+  "This phone is slim and light and the display is beautiful.",
+  "its a little geeky but i think thats its sex on toast and it rocks and oozes sex right down to its battery embedded sleek stylish leather case.",
+  "Great product, fast shipping!.",
+  "Absolutely great.",
+  "The keyboard is a nice compromise between a full QWERTY and the basic cell phone number keypad.",
+  "i got this phone around the end of may and im completely unhappy with it.",
+  "It is very comfortable on the ear.",
+  "It has been a winner for us.",
+  ")Setup couldnt have been simpler.",
+  "Ive tried several different earpieces for my cell phone and this Jabra one is the first one Ive found that fits my ear comfortably.",
+  "Could not get strong enough signal.",
+  "Iam very pleased with my purchase.",
+  "Bad Quality.",
+  "Gets the job done.",
+  "Great audio!.",
+  "Basically the service was very bad.",
+  "it did not work in my cell phone plug i am very up set with the charger!.",
+  "Ive only had my bluetooth for a few weeks, but I really like it.",
+  "The BT headset was such a disapoinment.",
+  "It is so small and you dont even realize that it is there after a while of getting used to it.",
+  "The accompanied software is almost brilliant.",
+  "Headset works great & was packaged nicely to avoid any damage.",
+  "!I definitly recommend!!",
+  "Buyer--Be Very Careful!!!!!.",
+  "The majority of the Logitech earbud headsets failed.",
+  "Very good stuff for the price.",
+  "My headset works just peachy-keen.",
+  "In my house I was getting dropped coverage upstairs and no coverage in my basement.",
+  "Voice recognition is tremendous!",
+  "What a waste.",
+  "During several different 2 minute calls, I experienced 5 drops and it was in an area that had 5 bars.",
+  "I was not happy with this item.",
+  "very disappointed.",
+  "The phone takes FOREVER to charge like 2 to 5 hours literally.",
+  "I got this phone on reccomendation from a relative and Im glad I did.",
+  "What a waste of time!",
+  "Its reception is very very poor.",
+  "Items stated as included from the description ARE NOT INCLUDED.",
+  "After 3 months, screen just went black all of a sudden.",
+  "I Was Hoping for More.",
+  "Audio Quality is poor, very poor.",
+  "I had absolutely no problem with this headset linking to my 8530 Blackberry Curve!",
+  "I know that sounds funny, but to me it seemed like sketchy technology that wouldnt work well.Well, this one works great.",
+  "Ive bought $5 wired headphones that sound better than these.",
+  "This phone is very fast with sending any kind of messages and web browsing is significantly faster than previous phones i have used.",
+  "Nice quality build, unlike some cheap s*** out there.",
+  "This item is fantastic and works perfectly!",
+  "And I just love the colors!",
+  "W810i is just SUPERB.",
+  "All I can do is whine on the Internet, so here it goes.The more I use the thing the less I like it.",
+  "Great charger.",
+  "This is essentially a communications tool that does not communicate.",
+  "Works like a charm; it work the same as the one I got with the phone.",
+  "I still maintain that monkeys shouldnt make headphones, we just obviously dont share enough DNA to copy the design over to humans.",
+  "Great Value.",
+  "Doesnt work at all.. I bougth it for my L7c and its not working.",
+  "The look of it is very sharp and the screen is nice and clear, with great graphics."
+];
+
+function randomData() {
+  var result = "";
+  for (i = 0; i < getRandomInt(); i++) {
+    result += data[Math.floor(Math.random() * data.length)] + " ";
+  }
+  return result;
+}
+function getRandomInt() {
+  return Math.floor(Math.random() * Math.floor(3)) + 1;
+}
+
+async function start() {
+  var randata = randomData();
+  if (!randata) return;
+  await updateAnalytics(randata);
+}
+
+async function updateAnalytics(data) {
+  var response = await analyze(data);
+  var options = {
+    method: "GET",
+    url: "https://groker.init.st/api/events",
+    qs: {
+      accessKey: "ist_FfrGNd8Ns4yQUezprMc2Sjtb9z4ddR8O",
+      bucketKey: "RS6NPFASQ5DY",
+      ...response
+    },
+    headers: {
+      "cache-control": "no-cache",
+      Connection: "keep-alive",
+      "Accept-Encoding": "gzip, deflate",
+      Host: "groker.init.st",
+      "Postman-Token":
+        "cb392114-1e7d-4837-b64d-63b7389462a5,dfd43178-ec0b-433a-86c8-a3462df0b8f6",
+      "Cache-Control": "no-cache",
+      Accept: "*/*",
+      "User-Agent": "PostmanRuntime/7.18.0"
+    }
+  };
+
+  request(options, function(error, response, body) {
+    if (error) throw new Error(error);
+
+    console.log(response.statusCode);
+  });
+}
+
+module.exports = { updateAnalytics };
