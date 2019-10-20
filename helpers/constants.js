@@ -6,6 +6,9 @@ const API = {
   updateKnowledgeBase: knowledgebaseId => {
     return `knowledgebases/${knowledgebaseId}/languages/en-US/documents/`;
   },
+  trainKnowledgeBase: knowledgebaseId => {
+    return `knowledgebases/${knowledgebaseId}/languages/en-US/trainings`;
+  },
   knowledgeBases: "knowledgebases"
 };
 
