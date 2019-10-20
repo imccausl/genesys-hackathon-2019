@@ -3,33 +3,42 @@ const _request = require("request");
 const { promisify } = require("util");
 
 const request = promisify(_request);
-const { API, CONFIDENCE_THRESHOLD } = require("../helpers/constants");
+const {
+  API,
+  CONFIDENCE_THRESHOLD,
+  CONFIDENCE_LOWER_THRESHOLD
+} = require("../helpers/constants");
 
 const { ORG_ID } = process.env;
 
-// for testing without app.js
-if (!global.token) {
-  global.token =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6ImEyZmE3NDg1LTViMWUtNDBiNC1iZTVhLWM0ZmY2NGE2ODY3NSIsImV4cCI6MTU3MTUyNjQzMiwiaWF0IjoxNTcxNTIyODMyfQ.n4ucuhTQLrpEx6UIG7t0REploi7kZy6874vU7GDPRts";
-}
-
-function _filterByConfidence(result) {
+function getSearchPayload(result, shouldFallback) {
   if (result && result.confidence && result.confidence > CONFIDENCE_THRESHOLD) {
-    return { result };
+    return {
+      fulfillmentText: result.faq.answer
+    };
+  } else if (
+    result &&
+    !shouldFallback &&
+    result.confidence &&
+    result.confidence > CONFIDENCE_LOWER_THRESHOLD
+  ) {
+    return {
+      fulfillmentText: "Did you mean to ask: " + result.faq.question
+    };
   }
-
+  if (shouldFallback) return;
   return {
-    KnowledgeBase: result && result.KnowledgeBase ? result.KnowledgeBase : null,
-    faq: "I'm sorry, I didn't understand that. Can you try a different wording?"
+    fulfillmentText:
+      "I'm sorry, I could not find any results. Can you please rephrase your question?"
   };
 }
 
-async function askKnowledgeBase(kbId, query) {
+async function askKnowledgeBase(kbId, query, shouldFallback) {
   const options = {
     method: "POST",
     url: `${API.root}${API.searchKnowledgeBase(kbId)}`,
     headers: {
-      token: global.token,
+      token: process.env.TOKEN,
       organizationid: ORG_ID,
       "Content-Type": "application/json"
     },
@@ -47,19 +56,20 @@ async function askKnowledgeBase(kbId, query) {
 
   try {
     const result = await request(options);
-    console.log(result);
     if (result.body && !result.body.errorMessage) {
-      return {
-        query: result.body.query,
-        result: _filterByConfidence(result.body.results[0])
-      };
+      return getSearchPayload(result.body.results[0], shouldFallback);
     }
 
     if (result.body && result.body.errorMessage) {
-      throw new Error(result.body.errorMessage);
+      return {
+        fulfillmentText: result.body.errorMessage
+      };
     }
   } catch (e) {
-    return { status: "error", message: e };
+    return {
+      fulfillmentText:
+        "You know humans, they make errors! It is one of them. please try again."
+    };
   }
 }
 
