@@ -34,7 +34,8 @@ const classify = async text => {
   // other classifications include "reject" and "greeting"
   const isRelevant = true;
   //classification.includes("question") || classification.includes("statement");
-  const isQuestion = classification.includes("question");
+  const isQuestion =
+    classification.includes("question") || classification.includes("clarify");
 
   return { text, isRelevant, isQuestion };
 };
