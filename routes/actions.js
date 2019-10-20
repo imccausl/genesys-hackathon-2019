@@ -6,7 +6,11 @@ var { updateAnalytics } = require("../helpers/analytics");
 
 /* GET users listing. */
 router.post("/", async function(req, res, next) {
-  updateAnalytics(req.body.queryResult.queryText);
+  if (req.body.queryResult) {
+    updateAnalytics(req.body.queryResult.queryText);
+  }
+  if (req.body.queryResult.queryText === "TELEPHONY_WARMUP")
+    return res.json({});
   if (
     req.body.queryResult.action &&
     req.body.queryResult.action.includes("smalltalk")
@@ -14,6 +18,7 @@ router.post("/", async function(req, res, next) {
     return res.json(req.body.queryResult);
   if (
     req.body.queryResult.action === "input.unknown" &&
+    req.body.queryResult.originalDetectIntentRequest &&
     req.body.queryResult.originalDetectIntentRequest.source ===
       "GOOGLE_TELEPHONY"
   )
