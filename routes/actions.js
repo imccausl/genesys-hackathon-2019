@@ -12,6 +12,14 @@ router.post("/", async function(req, res, next) {
     req.body.queryResult.action.includes("smalltalk")
   )
     return res.json(req.body.queryResult);
+  if (
+    req.body.queryResult.action === "input.unknown" &&
+    req.body.queryResult.originalDetectIntentRequest.source ===
+      "GOOGLE_TELEPHONY"
+  )
+    res.json({
+      fulfillmentText: "Welcome to the future! I'm Genesys, how can I help you?"
+    });
   const result = await askKnowledgeBase(
     KNOWLEDGE_BASES.slack,
     req.body.queryResult.queryText,
