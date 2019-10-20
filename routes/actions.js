@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const analyze = require("../helpers/analyze");
 const { askKnowledgeBase } = require("../helpers/search");
 const { KNOWLEDGE_BASES } = require("../helpers/constants");
 var { updateAnalytics } = require("../helpers/analytics");
@@ -25,6 +26,8 @@ router.post("/", async function(req, res, next) {
     res.json({
       fulfillmentText: "Welcome to the future! I'm Genesys, how can I help you?"
     });
+
+  const sessionId = req.body.session;
   const result = await askKnowledgeBase(
     KNOWLEDGE_BASES.slack,
     req.body.queryResult.queryText,
@@ -33,6 +36,21 @@ router.post("/", async function(req, res, next) {
           "channel"
       : false
   );
+  const score = await analyze(req.body.queryResult.queryText);
+  console.log(score);
+  if (!global.session[sessionId]) {
+    global.session[sessionId] = {
+      result: [result ? result.fulfillmentText : ""],
+      score: score.Score
+    };
+  } else {
+    global.session[sessionId]["result"].push(
+      result ? result.fulfillmentText : ""
+    );
+    global.session[sessionId]["score"] += score.Score / 2;
+  }
+  console.log(global.session[sessionId]["result"]);
+  console.log("Cumulative score:", global.session[sessionId]["score"]);
   res.json(result);
 });
 

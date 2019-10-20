@@ -7,6 +7,8 @@ const {
 } = require("../helpers/constants");
 const updateKnowledgeBase = require("./updateKnowledgeBase");
 const trainKnowledgeBase = require("./trainKnowledgeBase");
+const postToSlack = require("./postToSlack");
+
 const request = promisify(_request);
 const kbId = KNOWLEDGE_BASES.finance;
 
@@ -50,9 +52,11 @@ const getQuestionAnswerPair = () => {
       const pair = { question, answer };
       console.log(pair);
       const result = await updateKnowledgeBase(kbId, pair);
+      await postToSlack(
+        "finance",
+        "Nice! A new question/answer pair has been added! Re-training the model!"
+      );
       const train = await trainKnowledgeBase(kbId);
-
-      console.log(train.body);
       return result.body;
     }
   };
