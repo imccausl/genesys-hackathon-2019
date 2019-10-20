@@ -7,7 +7,9 @@ const {
 } = require("../helpers/constants");
 const updateKnowledgeBase = require("./updateKnowledgeBase");
 const trainKnowledgeBase = require("./trainKnowledgeBase");
-const postToSlack = require("./postToSlack");
+const postToSlack = require("./postToSlack")(
+  "xoxb-801358426645-801872597797-z7M9nOuoKLG8eOqOsQcEE1KB"
+);
 
 const request = promisify(_request);
 const kbId = KNOWLEDGE_BASES.finance;
