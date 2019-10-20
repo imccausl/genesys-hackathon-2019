@@ -6,6 +6,7 @@ const {
   KNOWLEDGE_BASES
 } = require("../helpers/constants");
 const updateKnowledgeBase = require("./updateKnowledgeBase");
+const trainKnowledgeBase = require("./trainKnowledgeBase");
 const request = promisify(_request);
 const kbId = KNOWLEDGE_BASES.finance;
 
@@ -48,8 +49,10 @@ const getQuestionAnswerPair = () => {
       answer = classification.text.replace(/\n/g, " ");
       const pair = { question, answer };
       console.log(pair);
-      const result = updateKnowledgeBase(kbId, pair);
-      console.log(result.body);
+      const result = await updateKnowledgeBase(kbId, pair);
+      const train = await trainKnowledgeBase(kbId);
+
+      console.log(train.body);
       return result.body;
     }
   };
