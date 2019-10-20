@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+var url = require("url");
+
 const analyze = require("../helpers/analyze");
 const postToSlack = require("../helpers/postToSlack")(
   "xoxb-801358426645-788633069618-2aHNJosorn91XtNiDxoy4auS"
@@ -7,28 +9,33 @@ const postToSlack = require("../helpers/postToSlack")(
 const { askKnowledgeBase } = require("../helpers/search");
 const { KNOWLEDGE_BASES, HANDOFF_THRESHOLD } = require("../helpers/constants");
 var { updateAnalytics } = require("../helpers/analytics");
+// Imports the Google Cloud client library
+const { Translate } = require("@google-cloud/translate");
+
+// Creates a client
+const translate = new Translate();
 
 /* GET users listing. */
 router.post("/", async function(req, res, next) {
-  if (req.body.queryResult) {
+  console.log(req.body.queryResult);
+  if (req.body.queryResult.languageCode == "ru") {
+    let [translations] = await translate.translate(
+      req.body.queryResult.queryText,
+      "en"
+    );
+    req.body.queryResult.queryText = translations;
+    console.log(translations, req.body.queryResult.queryText);
+  }
+  if (req.body.queryResult && req.body.queryResult.queryText) {
     updateAnalytics(req.body.queryResult.queryText);
   }
-  if (req.body.queryResult.queryText === "TELEPHONY_WARMUP")
-    return res.json({});
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
   if (
     req.body.queryResult.action &&
     req.body.queryResult.action.includes("smalltalk")
   )
     return res.json(req.body.queryResult);
-  if (
-    req.body.queryResult.action === "input.unknown" &&
-    req.body.queryResult.originalDetectIntentRequest &&
-    req.body.queryResult.originalDetectIntentRequest.source ===
-      "GOOGLE_TELEPHONY"
-  )
-    res.json({
-      fulfillmentText: "Welcome to the future! I'm Genesys, how can I help you?"
-    });
 
   const sessionId = req.body.session;
   const slackUserId = req.body.originalDetectIntentRequest.payload.data
@@ -36,7 +43,7 @@ router.post("/", async function(req, res, next) {
     : null;
 
   const result = await askKnowledgeBase(
-    KNOWLEDGE_BASES.slack,
+    KNOWLEDGE_BASES[query["kbName"]],
     req.body.queryResult.queryText,
     req.body.originalDetectIntentRequest.payload.data
       ? req.body.originalDetectIntentRequest.payload.data.event.channel_type ===
@@ -90,6 +97,21 @@ router.post("/", async function(req, res, next) {
     return res.json({});
   }
 
+  res.json(result);
+});
+
+router.post("/fbi", async function(req, res, next) {
+  if (req.body.queryResult && req.body.queryResult.queryText) {
+    updateAnalytics(req.body.queryResult.queryText);
+  }
+  const result = await askKnowledgeBase(
+    KNOWLEDGE_BASES.fbi,
+    req.body.queryResult.queryText,
+    null,
+    req.body.queryResult.outputContexts[
+      req.body.queryResult.outputContexts.length - 1
+    ].parameters.CodeName
+  );
   res.json(result);
 });
 
