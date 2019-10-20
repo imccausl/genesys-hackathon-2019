@@ -17,8 +17,17 @@ async function analyze(text) {
   console.log(`Text: ${text}`);
   console.log(`Sentiment score: ${sentiment.score}`);
   console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-
-  return { text, sentiment };
+  return {
+    Text: text,
+    Score: sentiment.score,
+    "Positive Level": result.sentences.filter(x => x.sentiment.score > 0.25)
+      .length,
+    "Negative Level": result.sentences.filter(x => x.sentiment.score < -0.25)
+      .length,
+    "Neutral Level": result.sentences.filter(
+      x => x.sentiment.score > -0.25 && x.sentiment.score < 0.25
+    ).length
+  };
 }
 
 module.exports = analyze;
