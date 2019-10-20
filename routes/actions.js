@@ -7,6 +7,7 @@ const analyze = require("../helpers/analyze");
 const postToSlack = require("../helpers/postToSlack")(
   process.env.HANDOFF_TOKEN
 );
+console.log(process.env.HANDOFF_TOKEN);
 const { askKnowledgeBase } = require("../helpers/search");
 const { KNOWLEDGE_BASES, HANDOFF_THRESHOLD } = require("../helpers/constants");
 var { updateAnalytics } = require("../helpers/analytics");

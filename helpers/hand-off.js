@@ -1,6 +1,5 @@
-const postToSlack = require("./postToSlack")(
-  "xoxb-801358426645-788633069618-2aHNJosorn91XtNiDxoy4auS"
-);
+require("dotenv").config();
+const postToSlack = require("./postToSlack")(process.env.HANDOFF_TOKEN);
 const analyze = require("./analyze");
 const { HANDOFF_THRESHOLD } = require("./constants");
 

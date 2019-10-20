@@ -8,6 +8,7 @@ const {
 const updateKnowledgeBase = require("./updateKnowledgeBase");
 const trainKnowledgeBase = require("./trainKnowledgeBase");
 const postToSlack = require("./postToSlack")(process.env.QUESTION_MAKER_TOKEN);
+console.log(process.env.QUESTION_MAKER_TOKEN);
 
 const request = promisify(_request);
 const kbId = KNOWLEDGE_BASES.finance;
