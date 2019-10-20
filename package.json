@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "classifier:start": "make install && make run",
     "start": "export GOOGLE_APPLICATION_CREDENTIALS=./google_creds.json && DEBUG=genesys-hackathon-2019:* nodemon ./bin/www",
     "run-sentiments": "export GOOGLE_APPLICATION_CREDENTIALS=./google_creds.json && node helpers/run-sentiments.js"
   },
