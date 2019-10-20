@@ -11,7 +11,7 @@ router.post("/", async function(req, res, next) {
     req.body.queryResult.action &&
     req.body.queryResult.action.includes("smalltalk")
   )
-    return;
+    return res.json(req.body.queryResult);
   const result = await askKnowledgeBase(
     KNOWLEDGE_BASES.slack,
     req.body.queryResult.queryText,
