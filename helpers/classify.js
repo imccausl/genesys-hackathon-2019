@@ -45,7 +45,7 @@ const getQuestionAnswerPair = () => {
     }
 
     if (classification.isRelevant && !classification.isQuestion && question) {
-      answer = classification.text;
+      answer = classification.text.replace(/\n/g, " ");
       const pair = { question, answer };
       console.log(pair);
       const result = updateKnowledgeBase(kbId, pair);
