@@ -1,0 +1,48 @@
+#! ../venv/bin/python
+import nltk
+from flask import Flask, json
+from flask import request
+from flask_cors import CORS
+
+nltk.download("nps_chat")
+nltk.download("punkt")
+
+api = Flask(__name__)
+CORS(api)
+
+posts = nltk.corpus.nps_chat.xml_posts()[:10000]
+
+
+def dialogue_act_features(post):
+    features = {}
+    for word in nltk.word_tokenize(post):
+        features["contains({})".format(word.lower())] = True
+    return features
+
+
+featuresets = [(dialogue_act_features(post.text), post.get("class")) for post in posts]
+size = int(len(featuresets) * 0.1)
+train_set, test_set = featuresets[size:], featuresets[:size]
+classifier = nltk.NaiveBayesClassifier.train(train_set)
+accuracy = nltk.classify.accuracy(classifier, test_set)
+
+
+@api.route("/", methods=["POST"])
+def get_text_classification():
+    data = request.json
+    result = None
+
+    try:
+        text = data["text"]
+        classification = classifier.classify(dialogue_act_features(text))
+        result = {"classification": classification, "accuracy": accuracy}
+        print(result)
+    except KeyError:
+        result = {"status": "error", "message": "invalid query param"}
+
+    return json.dumps(result)
+
+
+if __name__ == "__main__":
+    api.run()
+

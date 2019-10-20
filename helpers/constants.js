@@ -7,5 +7,6 @@ const API = {
 };
 
 const CONFIDENCE_THRESHOLD = 0.6;
+const CLASSIFIER_API_ENDPOINT = "http://localhost:5000/";
 
-module.exports = { API, CONFIDENCE_THRESHOLD };
+module.exports = { API, CONFIDENCE_THRESHOLD, CLASSIFIER_API_ENDPOINT };
