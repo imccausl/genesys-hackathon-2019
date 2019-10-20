@@ -1,10 +1,11 @@
+require("dotenv").config();
 var express = require("express");
 var router = express.Router();
 var url = require("url");
 
 const analyze = require("../helpers/analyze");
 const postToSlack = require("../helpers/postToSlack")(
-  "xoxb-801358426645-788633069618-2aHNJosorn91XtNiDxoy4auS"
+  process.env.HANDOFF_TOKEN
 );
 const { askKnowledgeBase } = require("../helpers/search");
 const { KNOWLEDGE_BASES, HANDOFF_THRESHOLD } = require("../helpers/constants");
