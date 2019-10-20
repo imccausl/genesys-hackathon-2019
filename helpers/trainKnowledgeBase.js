@@ -26,3 +26,5 @@ const trainKnowledgeBase = async kbId => {
   const response = await request(options);
   return response.body;
 };
+
+module.exports = trainKnowledgeBase;

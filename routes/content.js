@@ -13,12 +13,13 @@ router.post("/", async function(req, res, next) {
 
   const { event } = req.body;
   if (event && event.type === "message") {
-    const { text } = event;
-    const result = await getQuestionAnswerPair(text);
-    console.log(result);
+    const { text, subtype } = event;
+    if (!subtype) {
+      const result = await getQuestionAnswerPair(text);
 
-    if (result) {
-      return res.json(result);
+      if (result) {
+        return res.json(result);
+      }
     }
   }
 

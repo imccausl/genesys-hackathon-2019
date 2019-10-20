@@ -6,6 +6,11 @@ const {
   KNOWLEDGE_BASES
 } = require("../helpers/constants");
 const updateKnowledgeBase = require("./updateKnowledgeBase");
+const trainKnowledgeBase = require("./trainKnowledgeBase");
+const postToSlack = require("./postToSlack")(
+  "xoxb-801358426645-801872597797-z7M9nOuoKLG8eOqOsQcEE1KB"
+);
+
 const request = promisify(_request);
 const kbId = KNOWLEDGE_BASES.finance;
 
@@ -29,7 +34,8 @@ const classify = async text => {
   // other classifications include "reject" and "greeting"
   const isRelevant = true;
   //classification.includes("question") || classification.includes("statement");
-  const isQuestion = classification.includes("question");
+  const isQuestion =
+    classification.includes("question") || classification.includes("clarify");
 
   return { text, isRelevant, isQuestion };
 };
@@ -48,8 +54,12 @@ const getQuestionAnswerPair = () => {
       answer = classification.text.replace(/\n/g, " ");
       const pair = { question, answer };
       console.log(pair);
-      const result = updateKnowledgeBase(kbId, pair);
-      console.log(result.body);
+      const result = await updateKnowledgeBase(kbId, pair);
+      await postToSlack(
+        "finance",
+        "Nice! A new question/answer pair has been added! Re-training the model!"
+      );
+      const train = await trainKnowledgeBase(kbId);
       return result.body;
     }
   };
